@@ -56,4 +56,4 @@ TaskTracker/
 
 ---
 
-## ❤️ Made with love by [Jagadeesh](https://github.com/Jagadeesh729)
+## Made with ❤️ by [Jagadeesh](https://github.com/Jagadeesh729)
