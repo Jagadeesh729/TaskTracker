@@ -12,8 +12,6 @@ A full-stack MERN task management app with login, dashboard, task analytics, adm
 - 🔧 Backend: Node.js + Express + MongoDB
 - 🖥️ Frontend: React + Recharts + TailwindCSS
 
-> ⚠️ Currently, dark mode support is **not yet enabled**.
-
 ## 🚀 Getting Started
 
 ### 🔧 Backend
