@@ -8,24 +8,11 @@ const verifyToken = require("./middlewares/auth.js");
 
 const userRoutes = require("./routes/user.routes.js");
 const taskRoutes = require("./routes/task.routes.js");
-const checkTaskStatus = require("./utils/checkTaskStatus.js");
 
 const app = express();
 
-// Serve frontend static files (from dist)
+// Serve frontend static files
 app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
-
-const indexPath = path.resolve(
-  __dirname,
-  "..",
-  "frontend",
-  "dist",
-  "index.html"
-);
-
-app.get("/*", (req, res) => {
-  res.sendFile(indexPath);
-});
 
 // CORS setup
 app.use(
@@ -42,9 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 // Connect to database
 connectDB();
 
-// Routes
+// API Routes
 app.use("/users", userRoutes);
-app.use("/tasks", checkTaskStatus, taskRoutes);
+app.use("/tasks", taskRoutes);
 
 // Token verification route
 app.get("/verify", verifyToken, (req, res) => {
@@ -53,6 +40,11 @@ app.get("/verify", verifyToken, (req, res) => {
     token: req.token,
     user: req.user,
   });
+});
+
+// Catch-all route for SPA (React)
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "..", "frontend", "dist", "index.html"));
 });
 
 // Start server
