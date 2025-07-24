@@ -11,10 +11,17 @@ const taskRoutes = require("./routes/task.routes.js");
 
 const app = express();
 
-// Serve frontend static files
+// Connect to MongoDB
+connectDB();
+
+// Serve frontend static files (React build)
 app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
 
-// CORS setup
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// CORS Configuration
 app.use(
   cors({
     origin: ["https://tasktracker-xj27.onrender.com", "http://localhost:5173"],
@@ -22,12 +29,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Connect to database
-connectDB();
 
 // API Routes
 app.use("/users", userRoutes);
@@ -42,9 +43,9 @@ app.get("/verify", verifyToken, (req, res) => {
   });
 });
 
-// Catch-all route for SPA (React)
+// Catch-all route for client-side routing (React SPA)
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "..", "frontend", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
 });
 
 // Start server
