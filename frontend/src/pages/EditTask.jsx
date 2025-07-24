@@ -7,6 +7,7 @@ import Spinner from "../components/Spinner";
 import toast from "react-hot-toast";
 import JoditEditor from "jodit-react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import API from "../utils/api";
 
 const EditTask = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const EditTask = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(`/tasks/gettasks`, {
+      const res = await API.get(`/tasks/gettasks`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log(res.data.tasks);
@@ -60,7 +61,7 @@ const EditTask = () => {
   const deleteSubTask = async (pId, id) => {
     console.log(pId, id);
     try {
-      const response = await axios.delete(`/tasks/delete-subtask/${pId}/${id}`);
+      const response = await API.delete(`/tasks/delete-subtask/${pId}/${id}`);
       console.log(response.data);
       toast.success("Sub Task deleted successfully!");
       fetchTasksData();
@@ -93,7 +94,7 @@ const EditTask = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.put(`/tasks/update/${task._id}`, task);
+      const response = await API.put(`/tasks/update/${task._id}`, task);
       console.log(response.data);
       toast.success("Task Edited successfully!");
       navigate("/");

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AddSubTask from "../components/AddSubTask";
 import JoditEditor from "jodit-react";
+import API from "../utils/api"
 
 const AddTask = () => {
   const [users, setUsers] = useState([]);
@@ -35,7 +36,7 @@ const AddTask = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("/users/getusers");
+        const res = await API.get("/users/getusers");
         setUsers(res.data.users);
       } catch (error) {
         console.error("Failed to fetch users", error);
@@ -52,7 +53,7 @@ const AddTask = () => {
       return;
     }
     try {
-      const data = await axios.post("/tasks/create", formData);
+      const data = await API.post("/tasks/create", formData);
       console.log(data);
       setFormData({
         title: "",

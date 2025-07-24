@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import API from "../utils/api";
 
 const AddTodo = ({ fetchTasksData }) => {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -22,7 +23,7 @@ const AddTodo = ({ fetchTasksData }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("/users/getusers");
+        const res = await API.get("/users/getusers");
         setUsers(res.data.users);
         console.log(users);
       } catch (error) {
@@ -39,7 +40,7 @@ const AddTodo = ({ fetchTasksData }) => {
       return;
     }
     try {
-      const data = await axios.post("/tasks/create", formData);
+      const data = await API.post("/tasks/create", formData);
       console.log(data);
       setFormData({});
       toast.success("Task created successfully!");

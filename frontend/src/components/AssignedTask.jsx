@@ -6,6 +6,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../state/userAtom";
 import { useNavigate } from "react-router-dom";
+import API from "../utils/api";
 
 const AssignedTask = ({
   task,
@@ -24,7 +25,7 @@ const AssignedTask = ({
   const verify = async () => {
     const token = localStorage.getItem("token");
     if (token) {
-      axios
+      API
         .get("/verify", {
           headers: { Authorization: `Bearer ${token}` },
         })
@@ -56,7 +57,7 @@ const AssignedTask = ({
 
   const notifyEmail = async () => {
     try {
-      await axios.post("/tasks/notify", {
+      await API.post("/tasks/notify", {
         taskId: task._id,
         assignedToEmail: selectedUser,
       });

@@ -6,6 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import axios from "axios";
 import Spinner from "./Spinner.jsx"; // adjust if path is different
+import API from "../utils/api"
 
 function NavBar() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ function NavBar() {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No token");
 
-        const res = await axios.get("/verify", {
+        const res = await API.get("/verify", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

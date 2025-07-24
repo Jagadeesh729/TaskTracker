@@ -8,6 +8,7 @@ import { userAtom } from "../state/userAtom.js";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar.jsx";
 import Spinner from "../components/Spinner.jsx";
+import API from "../utils/api.js";
 
 function LoginPage () {
 
@@ -19,7 +20,7 @@ useEffect(() => {
   const token = localStorage.getItem("token");
   if (token) {
     setLoading(true);
-    axios
+    API
       .get("/verify", {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -42,7 +43,7 @@ const handleLogin = async (x) => {
   try {
     console.log("login called");
 
-    const res = await axios.post(
+    const res = await API.post(
       "/users/login",
       {
         email: x.email,

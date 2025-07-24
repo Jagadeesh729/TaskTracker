@@ -7,6 +7,7 @@ import Spinner from "../components/Spinner.jsx";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import AddSubTask from "../components/AddSubTask.jsx";
+import API from "../utils/api.js";
 
 
 
@@ -36,7 +37,7 @@ function HomePage() {
 
   const deleteSubTask = async (pId, id) => {
     try {
-      await axios.delete(`/tasks/delete-subtask/${pId}/${id}`);
+      await API.delete(`/tasks/delete-subtask/${pId}/${id}`);
       toast.success("Sub Task deleted successfully!");
       fetchTasksData();
     } catch (error) {
@@ -46,7 +47,7 @@ function HomePage() {
 
   const handleDeleteTask = async (id) => {
     try {
-      await axios.delete(`/tasks/delete/${id}`);
+      await API.delete(`/tasks/delete/${id}`);
       toast.success("Task deleted successfully!");
       fetchTasksData();
     } catch (error) {
@@ -58,7 +59,7 @@ function HomePage() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get(`/tasks/get`, {
+      const res = await API.get(`/tasks/get`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setTasks(res.data.tasks);
@@ -72,7 +73,7 @@ function HomePage() {
   const verify = async () => {
     const token = localStorage.getItem("token");
     if (token) {
-      axios
+      API
         .get("/verify", {
           headers: { Authorization: `Bearer ${token}` },
         })
@@ -100,7 +101,7 @@ function HomePage() {
   const updateTaskStatus = async (taskId, status) => {
     try {
       setLoading(true);
-      await axios.put(`/tasks/update/${taskId}`, { status });
+      await API.put(`/tasks/update/${taskId}`, { status });
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task._id === taskId ? { ...task, status } : task

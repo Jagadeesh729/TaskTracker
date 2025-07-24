@@ -9,6 +9,7 @@ import CompletedTask from "../components/CompletedTask.jsx";
 import Spinner from "../components/Spinner.jsx";
 import { useNavigate } from "react-router-dom";
 import AddSubTask from "../components/AddSubTask.jsx";
+import API from "../utils/api"
 
 function DashboardPage() {
   const [tasks, setTasks] = useState([]);
@@ -44,7 +45,7 @@ function DashboardPage() {
   const deleteSubTask = async (pId, id) => {
     console.log(pId, id);
     try {
-      const response = await axios.delete(`/tasks/delete-subtask/${pId}/${id}`);
+      const response = await API.delete(`/tasks/delete-subtask/${pId}/${id}`);
       console.log(response.data);
       toast.success("Sub Task deleted successfully!");
       fetchTasksData();
@@ -57,7 +58,7 @@ function DashboardPage() {
   const handleDeleteTask = async (id) => {
     console.log(id);
     try {
-      const response = await axios.delete(`/tasks/delete/${id}`);
+      const response = await API.delete(`/tasks/delete/${id}`);
       console.log(response.data);
       toast.success("Task deleted successfully!");
       fetchTasksData();
@@ -69,7 +70,7 @@ function DashboardPage() {
 
   const fetchTasksData = async () => {
     try {
-      const res = await axios.get("/tasks/gettasks");
+      const res = await API.get("/tasks/gettasks");
       setTasks(res.data.tasks);
       console.log(res.data);
       console.log(tasks);
@@ -80,7 +81,7 @@ function DashboardPage() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("/users/getusers");
+      const res = await API.get("/users/getusers");
       setUsers(res.data.users);
     } catch (error) {
       console.error("Failed to fetch users", error);
@@ -90,7 +91,7 @@ function DashboardPage() {
   const verify = async () => {
     const token = localStorage.getItem("token");
     if (token) {
-      axios
+      API
         .get("/verify", {
           headers: { Authorization: `Bearer ${token}` },
         })
@@ -118,7 +119,7 @@ function DashboardPage() {
 
   const updateTaskStatus = async (taskId, status) => {
     try {
-      await axios.put(`/tasks/update/${taskId}`, {
+      await API.put(`/tasks/update/${taskId}`, {
         status,
       });
       setTasks((prevTasks) =>
@@ -139,7 +140,7 @@ function DashboardPage() {
     }
 
     try {
-      await axios.put(`/tasks/update/${taskId}`, {
+      await API.put(`/tasks/update/${taskId}`, {
         assignedToEmail: email,
       });
       setTasks((prevTasks) =>

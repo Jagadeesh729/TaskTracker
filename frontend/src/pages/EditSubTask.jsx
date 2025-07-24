@@ -6,6 +6,7 @@ import axios from "axios";
 import Spinner from "../components/Spinner";
 import toast from "react-hot-toast";
 import JoditEditor from "jodit-react";
+import API from "../utils/api"
 
 const EditSubTask = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const EditSubTask = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(`/tasks/gettasks`, {
+      const res = await API.get(`/tasks/gettasks`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log(res.data.tasks);
@@ -90,7 +91,7 @@ const EditSubTask = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.put(
+      const response = await API.put(
         `/tasks/update-subtask/${parentId}/${task._id}`,
         task
       );
