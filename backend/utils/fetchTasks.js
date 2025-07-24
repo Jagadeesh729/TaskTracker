@@ -1,6 +1,8 @@
+const API_URL = process.env.API_URL || "http://localhost:5000";
+
 export const fetchUserTasks = async (token) => {
   try {
-    const res = await axios.get(`http://localhost:5000/tasks/get`, {
+    const res = await axios.get(`${API_URL}/tasks/get`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -11,4 +13,3 @@ export const fetchUserTasks = async (token) => {
     return [];
   }
 };
-
