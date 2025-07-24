@@ -7,7 +7,6 @@ import { useRecoilState } from "recoil";
 import { taskState } from "../state/taskAtom";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { taskState } from "../state/taskAtom";
 import API from "../utils/api"
 
 const COLORS = ["#3B82F6", "#FBBF24", "#10B981"]; // Indigo, Amber, Emerald
