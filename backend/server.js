@@ -1,23 +1,36 @@
 const express = require("express");
 const path = require("path");
-const cors = require("cors");
 require("dotenv").config();
+const cors = require("cors");
 
 const connectDB = require("./db/db.js");
 const verifyToken = require("./middlewares/auth.js");
 
 const userRoutes = require("./routes/user.routes.js");
 const taskRoutes = require("./routes/task.routes.js");
+const checkTaskStatus = require("./utils/checkTaskStatus.js");
 
 const app = express();
 
-// Connect to database
-connectDB();
+// Serve frontend static files (from dist)
+app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
 
-// Middlewares
+const indexPath = path.resolve(
+  __dirname,
+  "..",
+  "frontend",
+  "dist",
+  "index.html"
+);
+
+app.get("/*", (req, res) => {
+  res.sendFile(indexPath);
+});
+
+// CORS setup
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://tasktracker-xj27.onrender.com"],
+    origin: ["https://tasktracker-xj27.onrender.com", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -26,22 +39,20 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Connect to database
+connectDB();
+
 // Routes
 app.use("/users", userRoutes);
-app.use("/tasks", taskRoutes);
+app.use("/tasks", checkTaskStatus, taskRoutes);
 
-// Token verification test route
+// Token verification route
 app.get("/verify", verifyToken, (req, res) => {
   res.status(200).json({
     message: "Logged In Successfully",
     token: req.token,
     user: req.user,
   });
-});
-
-// Global 404 handler (optional)
-app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
 });
 
 // Start server

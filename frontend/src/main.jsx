@@ -10,13 +10,17 @@ import axios from "axios";
 
 axios.interceptors.request.use(
   function (config) {
-    config.baseURL = "http://localhost:5000";
+    config.baseURL =
+      import.meta.env.MODE === "development"
+        ? "http://localhost:5000"
+        : "https://tasktracker-1-m5or.onrender.com"; // replace with your actual backend Render URL
     return config;
   },
   function (error) {
     return Promise.reject(error);
   }
 );
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
