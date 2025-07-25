@@ -14,9 +14,6 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
-// Serve frontend static files (React build)
-app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -43,9 +40,19 @@ app.get("/verify", verifyToken, (req, res) => {
   });
 });
 
+// Serve frontend static files (React build)
+app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
+
 // Catch-all route for client-side routing (React SPA)
+const fs = require("fs");
+const indexPath = path.join(__dirname, "..", "frontend", "dist", "index.html");
+
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send("Frontend not built: index.html not found");
+  }
 });
 
 // Start server
