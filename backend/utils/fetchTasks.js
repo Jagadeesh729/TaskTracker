@@ -1,4 +1,5 @@
-const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchUserTasks = async (token) => {
   try {
@@ -13,4 +14,3 @@ export const fetchUserTasks = async (token) => {
     return [];
   }
 };
-	
